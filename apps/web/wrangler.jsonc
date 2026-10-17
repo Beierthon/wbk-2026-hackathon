@@ -9,6 +9,9 @@
     "binding": "ASSETS",
   },
   "keep_vars": true,
+  "routes": [
+    { "pattern": "wbk.2026.hackathon.kevinbeier.com", "custom_domain": true },
+  ],
   "observability": {
     "enabled": true,
     "head_sampling_rate": 1,
