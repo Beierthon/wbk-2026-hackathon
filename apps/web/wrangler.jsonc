@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "kevinbeier-hackathon-2026",
+  "name": "com-kevinbeier-hackathon-2026-wbk",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-10-13",
   "compatibility_flags": ["nodejs_compat"],
@@ -30,7 +30,7 @@
   "services": [
     {
       "binding": "WORKER_SELF_REFERENCE",
-      "service": "kevinbeier-hackathon-2026",
+      "service": "com-kevinbeier-hackathon-2026-wbk",
     },
   ],
   "durable_objects": {

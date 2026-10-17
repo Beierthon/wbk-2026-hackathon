@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import Script from "next/script"
 import { GeistMono } from "geist/font/mono"
 import { GeistSans } from "geist/font/sans"
 
@@ -14,9 +15,7 @@ export const metadata: Metadata = {
       { url: "/thirdeye-logo.png", type: "image/png" },
       { url: "/favicon.ico" },
     ],
-    apple: [
-      { url: "/thirdeye-logo.png", sizes: "180x180", type: "image/png" },
-    ],
+    apple: [{ url: "/thirdeye-logo.png", sizes: "180x180", type: "image/png" }],
   },
 }
 
@@ -36,9 +35,14 @@ export default function RootLayout({
       )}
     >
       <body>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+        <Script
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          strategy="afterInteractive"
+          data-cf-beacon={JSON.stringify({
+            token: "e29880e96764498fa6dd634949ad0883",
+          })}
+        />
       </body>
     </html>
   )
