@@ -50,3 +50,9 @@ supabase/.temp/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Cloudflare build output and local credentials
+**/.open-next/
+**/.wrangler/
+**/.dev.vars*
+**/cloudflare-env.d.ts
