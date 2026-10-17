@@ -10,9 +10,10 @@ application, with a separate Webpack build for Worker compatibility. Test with
 `pnpm --filter web preview:cloudflare`; deploy the built output using
 `pnpm --filter web deploy:cloudflare`.
 
-Create R2 bucket `kevinbeier-hackathon-2026-cache` before deploying. Cache
-Components and existing `use cache` data require a persistent cache backend;
-R2 provides it through `NEXT_INC_CACHE_R2_BUCKET`.
+The KV namespace `kevinbeier-hackathon-2026-cache` provides the incremental
+cache through `NEXT_INC_CACHE_KV`. Cache Components and existing `use cache`
+data use this backend; R2 is not used. The D1 tag cache and Durable Object
+revalidation queue remain enabled.
 
 Copy the existing production configuration directly into Cloudflare, preserving
 values without printing or committing credentials:
@@ -44,3 +45,5 @@ its supported peer range. Local validation: production build, Wrangler dry run
 (~2.5 MiB compressed), 107 existing unit tests, and workerd browser checks using
 mock data. Local cache seeding is performed by the adapter's preview command.
 These checks do not replace production Supabase and LiveKit verification.
+
+KV is eventually consistent across Cloudflare locations; cache writes can take up to about a minute to become visible elsewhere. This differs from R2. The application database remains authoritative, and Hackathon 2026 retains D1-based tag invalidation. Do not use the cache as an authoritative store for inventory or mutations. KV Free quotas apply; no paid plan is enabled automatically.
