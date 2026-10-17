@@ -2,7 +2,7 @@
 
 Production repository: `Beierthon/wbk-2026-hackathon`, branch `main`.
 Domain: `wbk.2026.hackathon.kevinbeier.com`.
-Worker: `kevinbeier-hackathon-2026`.
+Worker: `com-kevinbeier-hackathon-2026-wbk`.
 
 From the repository root, install with `corepack pnpm install --frozen-lockfile`,
 then `pnpm --filter web build:cloudflare`. OpenNext uses the existing Next.js
@@ -69,3 +69,9 @@ Cloudflare Access policies for Planner and Plutos must remain in place.
 Before proxying wbk.2026.hackathon.kevinbeier.com, verify active certificate
 coverage for that exact deeply nested hostname; the usual zone wildcard alone
 does not cover it. Do not enable paid certificate products.
+
+## Public production entry points
+
+Keep `main` as the production branch. The additional production `pages.dev` hostname redirects to the official custom domain, preserving path and query. Deployment-specific Pages URLs require Kevin's existing Cloudflare Access login; automatic preview deployments remain disabled. Do not remove the Access protection for the private Planner or Plutos services.
+
+Cloudflare Web Analytics loads after hydration from the root layout, using the public site token registered for `wbk.2026.hackathon.kevinbeier.com`. The token is a public beacon identifier, not an API credential. Use HTTP analytics for file-only assets.
