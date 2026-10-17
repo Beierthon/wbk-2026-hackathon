@@ -47,3 +47,25 @@ mock data. Local cache seeding is performed by the adapter's preview command.
 These checks do not replace production Supabase and LiveKit verification.
 
 KV is eventually consistent across Cloudflare locations; cache writes can take up to about a minute to become visible elsewhere. This differs from R2. The application database remains authoritative, and Hackathon 2026 retains D1-based tag invalidation. Do not use the cache as an authoritative store for inventory or mutations. KV Free quotas apply; no paid plan is enabled automatically.
+
+## Cloudflare protection and logging baseline
+
+The active kevinbeier.com zone uses Full (strict) TLS, minimum TLS 1.2 and HTTPS
+redirects. Browser cache TTL is set to respect origin headers. Keep the free
+Managed WAF enabled and public custom domains accessible without a login gate.
+Browser Integrity Check is disabled only for the existing /api/, /assets/,
+/static/, /_next/, /_nuxt/ and /webhooks/ path prefixes; keep Managed WAF active
+on these paths. Do not enable blanket Bot Fight Mode. These are shared zone
+settings, not Wrangler application settings; deployments must not reset them.
+Keep nameservers and iCloud MX, DKIM and TXT records unchanged. Do not enable
+R2, paid plans or a registrar transfer, or delete Vercel projects.
+
+Worker observability is declared in wrangler.jsonc: persisted invocation logs
+and query-string redaction are enabled, and the existing disabled traces setting
+is preserved. Do not log request URLs with queries, tokens or request bodies in
+application console messages. No Logpush destination is needed. Existing private
+Cloudflare Access policies for Planner and Plutos must remain in place.
+
+Before proxying wbk.2026.hackathon.kevinbeier.com, verify active certificate
+coverage for that exact deeply nested hostname; the usual zone wildcard alone
+does not cover it. Do not enable paid certificate products.
