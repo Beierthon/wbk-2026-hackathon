@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto"
 
 import { RepositoryError, getProjectRepository } from "@/lib/data"
 import { hasLiveKitServerEnv } from "@/lib/livekit/env"
+import { removeStalePublishers } from "@/lib/livekit/room-cleanup"
 import {
   createVisionAccessToken,
   type VisionLiveKitRole,
@@ -93,7 +94,12 @@ export async function POST(request: Request) {
   }
 
   const identity = `${role}-${randomUUID()}`
-  const { token, roomName } = await createVisionAccessToken({
+
+  if (role === "publisher") {
+    await removeStalePublishers(projectId)
+  }
+
+  const { token, roomName, expiresAt } = await createVisionAccessToken({
     projectId,
     identity,
     role,
@@ -105,6 +111,7 @@ export async function POST(request: Request) {
       url: process.env.NEXT_PUBLIC_LIVEKIT_URL,
       roomName,
       identity,
+      expiresAt,
     },
     error: null,
   })
